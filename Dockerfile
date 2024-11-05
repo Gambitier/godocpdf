@@ -18,7 +18,8 @@ FROM golang:1.22
 
 # Install required packages
 RUN apt-get update && apt-get install -y \
-    imagemagick ffmpeg unoconv libreoffice libvips libvips-tools libvips-dev
+    imagemagick ffmpeg unoconv libreoffice libvips libvips-tools libvips-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set up the application
 WORKDIR /app
