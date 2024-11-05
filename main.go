@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -23,11 +24,17 @@ func main() {
 func convertToPDF(inputPath string) ([]byte, error) {
 	outputPath := inputPath[:len(inputPath)-len(filepath.Ext(inputPath))] + ".pdf"
 
+	// Create the command with logging enabled
 	cmd := exec.Command("unoconv", "-f", "pdf", "-e", "PageRange=1-1", "-P", "PaperOrientation=landscape", inputPath)
+
+	// Capture stdout and stderr for debugging
+	var out, errOut bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &errOut
 
 	err := cmd.Run()
 	if err != nil {
-		return nil, fmt.Errorf("error in generating pdf from file: %v", err)
+		return nil, fmt.Errorf("error in generating pdf from file: %v; stdout: %s; stderr: %s", err, out.String(), errOut.String())
 	}
 
 	pdfBytes, err := os.ReadFile(outputPath)
