@@ -25,7 +25,7 @@ func convertToPDF(inputPath string) ([]byte, error) {
 	outputPath := inputPath[:len(inputPath)-len(filepath.Ext(inputPath))] + ".pdf"
 
 	// Create the command with logging enabled
-	cmd := exec.Command("unoconv", "-f", "pdf", "-e", "PageRange=1-1", "-P", "PaperOrientation=landscape", inputPath)
+	cmd := exec.Command("unoconv", "-f", "pdf", "-e", "PageRange=1-1", inputPath)
 
 	// Capture stdout and stderr for debugging
 	var out, errOut bytes.Buffer
